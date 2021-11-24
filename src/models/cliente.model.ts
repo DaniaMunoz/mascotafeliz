@@ -1,7 +1,7 @@
-import {Entity, model, property, hasMany} from '@loopback/repository';
-import {Afiliacion} from './afiliacion.model';
-import {Pedido} from './pedido.model';
+import {Entity, hasMany, model, property} from '@loopback/repository';
 import {Mascota} from './mascota.model';
+import {Pedido} from './pedido.model';
+
 
 @model()
 export class Cliente extends Entity {
@@ -69,8 +69,7 @@ export class Cliente extends Entity {
   })
   clave?: string;
 
-  @hasMany(() => Afiliacion)
-  afiliaciones: Afiliacion[];
+
 
   @hasMany(() => Pedido)
   pedidos: Pedido[];

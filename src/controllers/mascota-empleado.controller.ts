@@ -7,21 +7,21 @@ import {
   getModelSchemaRef,
 } from '@loopback/rest';
 import {
-  Afiliacion,
+  Mascota,
   Empleado,
 } from '../models';
-import {AfiliacionRepository} from '../repositories';
+import {MascotaRepository} from '../repositories';
 
-export class AfiliacionEmpleadoController {
+export class MascotaEmpleadoController {
   constructor(
-    @repository(AfiliacionRepository)
-    public afiliacionRepository: AfiliacionRepository,
+    @repository(MascotaRepository)
+    public mascotaRepository: MascotaRepository,
   ) { }
 
-  @get('/afiliacions/{id}/empleado', {
+  @get('/mascotas/{id}/empleado', {
     responses: {
       '200': {
-        description: 'Empleado belonging to Afiliacion',
+        description: 'Empleado belonging to Mascota',
         content: {
           'application/json': {
             schema: {type: 'array', items: getModelSchemaRef(Empleado)},
@@ -31,8 +31,8 @@ export class AfiliacionEmpleadoController {
     },
   })
   async getEmpleado(
-    @param.path.string('id') id: typeof Afiliacion.prototype.afiliacionId,
+    @param.path.string('id') id: typeof Mascota.prototype.mascotaId,
   ): Promise<Empleado> {
-    return this.afiliacionRepository.empleado(id);
+    return this.mascotaRepository.empleado(id);
   }
 }

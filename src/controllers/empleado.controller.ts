@@ -4,18 +4,12 @@ import {
   Filter,
   FilterExcludingWhere,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
-  post,
-  param,
-  get,
-  getModelSchemaRef,
-  patch,
-  put,
-  del,
-  requestBody,
-  response,
+  del, get,
+  getModelSchemaRef, param, patch, post, put, requestBody,
+  response
 } from '@loopback/rest';
 import {Empleado} from '../models';
 import {EmpleadoRepository} from '../repositories';
@@ -23,8 +17,8 @@ import {EmpleadoRepository} from '../repositories';
 export class EmpleadoController {
   constructor(
     @repository(EmpleadoRepository)
-    public empleadoRepository : EmpleadoRepository,
-  ) {}
+    public empleadoRepository: EmpleadoRepository,
+  ) { }
 
   @post('/empleados')
   @response(200, {
@@ -44,6 +38,7 @@ export class EmpleadoController {
     })
     empleado: Omit<Empleado, 'empleadoId'>,
   ): Promise<Empleado> {
+    //let p= await this.empleadoRepository.create(empleado);
     return this.empleadoRepository.create(empleado);
   }
 

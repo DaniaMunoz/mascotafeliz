@@ -1,8 +1,8 @@
-import {Entity, model, property, belongsTo, hasOne, hasMany} from '@loopback/repository';
+import {belongsTo, Entity, hasMany, model, property} from '@loopback/repository';
 import {Cliente} from './cliente.model';
-import {Afiliacion} from './afiliacion.model';
-import {PagoPlan} from './pago-plan.model';
 import {ConsultaVet} from './consulta-vet.model';
+import {Empleado} from './empleado.model';
+import {PagoPlan} from './pago-plan.model';
 
 @model()
 export class Mascota extends Entity {
@@ -55,14 +55,33 @@ export class Mascota extends Entity {
   })
   foto: string;
 
+  //Nuevos atributos
+  @property({
+    type: 'date',
+    required: true,
+  })
+  fechaSolicitud: string;
+
+  @property({
+    type: 'string',
+    required: false,
+  })
+  estadoSolicitud: string;
+
+  @property({
+    type: 'string',
+    required: false,
+  })
+  observaciones: string;
+
   @belongsTo(() => Cliente)
   clienteId: string;
 
-  @hasOne(() => Afiliacion)
-  afiliaciones: Afiliacion;
-
   @hasMany(() => PagoPlan)
   pagoPlans: PagoPlan[];
+
+  @belongsTo(() => Empleado)
+  empleadoId: string;
 
   @hasMany(() => ConsultaVet)
   consultaVets: ConsultaVet[];
