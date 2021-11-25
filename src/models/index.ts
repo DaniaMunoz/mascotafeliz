@@ -10,3 +10,4 @@ export * from './producto.model';
 export * from './proveedor.model';
 
 
+export * from './credenciales.model';

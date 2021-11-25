@@ -1,14 +1,16 @@
+import {AuthenticationComponent, registerAuthenticationStrategy} from '@loopback/authentication';
 import {BootMixin} from '@loopback/boot';
 import {ApplicationConfig} from '@loopback/core';
-import {
-  RestExplorerBindings,
-  RestExplorerComponent,
-} from '@loopback/rest-explorer';
 import {RepositoryMixin} from '@loopback/repository';
 import {RestApplication} from '@loopback/rest';
+import {
+  RestExplorerBindings,
+  RestExplorerComponent
+} from '@loopback/rest-explorer';
 import {ServiceMixin} from '@loopback/service-proxy';
 import path from 'path';
 import {MySequence} from './sequence';
+import {EstrategiaEmpleado} from './strategies/empleado.strategy';
 
 export {ApplicationConfig};
 
@@ -40,5 +42,16 @@ export class MascotafelizApplication extends BootMixin(
         nested: true,
       },
     };
+
+
+
+
+
+
+
+    //Si tenemos más estrategias del admin.strategy las añadimos aquí como linea 47
+    //Las estrategias aplican cuando las LLAMAMOS en la parte de controller.
+    registerAuthenticationStrategy(this, EstrategiaEmpleado);
+    this.component(AuthenticationComponent);
   }
 }

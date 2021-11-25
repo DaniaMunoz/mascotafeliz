@@ -49,17 +49,21 @@
     "!*/__tests__"
   ],
   "dependencies": {
+    "@loopback/authentication": "^8.0.0",
     "@loopback/boot": "^4.0.0",
     "@loopback/core": "^3.0.0",
     "@loopback/repository": "^4.0.0",
     "@loopback/rest": "^11.0.0",
     "@loopback/rest-explorer": "^4.0.0",
+    "@loopback/security": "^0.6.0",
     "@loopback/service-proxy": "^4.0.0",
     "@types/node-fetch": "^3.0.3",
     "crypto-js": "^4.1.1",
     "ionic-native": "https://github.com/ionic-team/ionic-native/tarball/v3.5.0",
+    "jsonwebtoken": "^8.5.1",
     "loopback-connector-mongodb": "^6.1.0",
     "node-fetch": "^2.6.6",
+    "parse-bearer-token": "^1.0.1",
     "password-generator": "^2.3.2",
     "tslib": "^2.0.0"
   },

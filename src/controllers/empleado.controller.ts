@@ -1,3 +1,5 @@
+
+import {service} from '@loopback/core/dist/service';
 import {
   Count,
   CountSchema,
@@ -8,17 +10,56 @@ import {
 } from '@loopback/repository';
 import {
   del, get,
-  getModelSchemaRef, param, patch, post, put, requestBody,
+  getModelSchemaRef, HttpErrors, param, patch, post, put, requestBody,
   response
 } from '@loopback/rest';
-import {Empleado} from '../models';
+import {Llaves} from '../config/llaves';
+import {Credenciales, Empleado} from '../models';
 import {EmpleadoRepository} from '../repositories';
+import {AutenticacionService} from '../services';
+const fetch = require('node-fetch');
+
 
 export class EmpleadoController {
   constructor(
     @repository(EmpleadoRepository)
     public empleadoRepository: EmpleadoRepository,
+    @service(AutenticacionService)
+    public servicioAutenticacion: AutenticacionService
   ) { }
+
+  //Token
+
+  @post("/identificarEmpleado", {
+    responses: {
+      '200': {
+        description: "Identificacion de usuarios"
+      }
+    }
+  })
+  async identificarEmpleado(
+    @requestBody() credenciales: Credenciales
+  ) {
+    let e = await this.servicioAutenticacion.IdentificarEmpleado(credenciales.usuario, credenciales.clave);
+    if (e) {
+      let token = this.servicioAutenticacion.GenerarTokenJWT(e);
+      return {
+        datos: {
+          nombre: e.nombres,
+          correo: e.correo,
+          nivel: e.nivel,
+          id: e.empleadoId
+        },
+        tk: token
+      }
+    } else {
+      throw new HttpErrors[401]("Datos inválidos");
+    }
+  }
+
+
+
+
 
   @post('/empleados')
   @response(200, {
@@ -38,8 +79,22 @@ export class EmpleadoController {
     })
     empleado: Omit<Empleado, 'empleadoId'>,
   ): Promise<Empleado> {
-    //let p= await this.empleadoRepository.create(empleado);
-    return this.empleadoRepository.create(empleado);
+
+    let clave = this.servicioAutenticacion.GenerarClave();
+    let claveCifrada = this.servicioAutenticacion.CifrarClave(clave);
+    empleado.clave = claveCifrada;
+    let p = await this.empleadoRepository.create(empleado);
+    //return this.empleadoRepository.create(empleado);
+
+    //Notificar al usuario
+    let destino = empleado.correo;
+    let asunto = 'Acceso al sistema - Mascota Feliz';
+    let contenido = `Hola ${empleado.nombres}, le informamos que pronto será vinclado como ${empleado.nivel}. Para ingresar al sistema su nombre de usuario es ${empleado.correo} y su contraseña es ${clave}`;
+    fetch(`${Llaves.urlServicioNotificaciones}/envio-correo?correo_destino=${destino}&asunto=${asunto}&contenido=${contenido}`)
+      .then((data: any) => {
+        console.log(data);
+      })
+    return p;
   }
 
   @get('/empleados/count')
