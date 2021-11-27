@@ -10,7 +10,8 @@ import {
 import {ServiceMixin} from '@loopback/service-proxy';
 import path from 'path';
 import {MySequence} from './sequence';
-import {EstrategiaEmpleado} from './strategies/empleado.strategy';
+import {EstrategiaCliente} from './strategies/cliente.strategy';
+import {EstrategiaAdmin, EstrategiaEmpleado} from './strategies/empleado.strategy';
 
 export {ApplicationConfig};
 
@@ -52,6 +53,8 @@ export class MascotafelizApplication extends BootMixin(
     //Si tenemos más estrategias del admin.strategy las añadimos aquí como linea 47
     //Las estrategias aplican cuando las LLAMAMOS en la parte de controller.
     registerAuthenticationStrategy(this, EstrategiaEmpleado);
+    registerAuthenticationStrategy(this, EstrategiaCliente);
+    registerAuthenticationStrategy(this, EstrategiaAdmin);
     this.component(AuthenticationComponent);
   }
 }

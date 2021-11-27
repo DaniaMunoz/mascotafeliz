@@ -38,7 +38,8 @@ export class Mascota extends Entity {
   sexo: string;
 
   @property({
-    type: 'date',
+    //type: 'date',
+    type: 'string',
     required: true,
   })
   fechaNacimiento: string;
@@ -57,7 +58,8 @@ export class Mascota extends Entity {
 
   //Nuevos atributos
   @property({
-    type: 'date',
+    //type: 'date',
+    type: 'string',
     required: true,
   })
   fechaSolicitud: string;

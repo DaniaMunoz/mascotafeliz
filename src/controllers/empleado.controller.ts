@@ -1,4 +1,5 @@
 
+import {authenticate} from '@loopback/authentication';
 import {service} from '@loopback/core/dist/service';
 import {
   Count,
@@ -60,7 +61,7 @@ export class EmpleadoController {
 
 
 
-
+  @authenticate("admin")
   @post('/empleados')
   @response(200, {
     description: 'Empleado model instance',

@@ -1,7 +1,7 @@
 import { /* inject, */ BindingScope, injectable} from '@loopback/core';
 import {repository} from '@loopback/repository';
 import {Llaves} from '../config/llaves';
-import {Empleado} from '../models';
+import {Cliente, Empleado} from '../models';
 import {ClienteRepository, EmpleadoRepository} from '../repositories';
 
 const generador = require("password-generator");
@@ -32,7 +32,7 @@ export class AutenticacionService {
   }
 
 
-
+  //Empleado
   IdentificarEmpleado(usuario: string, clave: string) {
     try {
       let e = this.empleadoRepository.findOne({where: {correo: usuario, clave: clave}});
@@ -59,6 +59,33 @@ export class AutenticacionService {
 
   }
 
+  //Cliente
+  IdentificarCliente(usuario: string, clave: string) {
+    try {
+      let c = this.clienteRepository.findOne({where: {correo: usuario, clave: clave}});
+      if (c) {
+        return c;
+      }
+      return false;
+    } catch {
+      return false;
+    }
+  }
+
+
+  GenerarTokencJWT(cliente: Cliente) {
+    let token = jwt.sign({
+      data: {
+        id: cliente.clienteId,
+        correo: cliente.correo,
+        nombre: cliente.nombres + " " + cliente.apellidos,
+        ciudad: cliente.ciudad
+      }
+    },
+      Llaves.claveJWT);
+    return token;
+
+  }
 
   ValidarTokenJWT(token: string) {
     try {
@@ -70,6 +97,22 @@ export class AutenticacionService {
 
     }
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   /* IdentificarUsuario(usuario: string, clave: string) {
     try {
