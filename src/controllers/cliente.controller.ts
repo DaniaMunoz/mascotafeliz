@@ -12,6 +12,7 @@ import {
   getModelSchemaRef, param, patch, post, put, requestBody,
   response
 } from '@loopback/rest';
+import {Llaves} from '../config/llaves';
 import {Cliente} from '../models';
 import {ClienteRepository} from '../repositories';
 import {AutenticacionService} from '../services';
@@ -55,9 +56,9 @@ export class ClienteController {
 
     //Notificar al usuario
     let destino = cliente.correo;
-    let asunto = 'Registro en la plataforma';
-    let contenido = `Hola ${cliente.nombres}, su nombre de usuario es: ${cliente.correo} y su contraseña es: ${clave} `;
-    fetch(`http://127.0.0.1:5000/envio-correo?correo_destino=${destino}&asunto=${asunto}&contenido=${contenido}`)
+    let asunto = 'Registro en la plataforma - Mascota Feliz';
+    let contenido = `¡Hola ${cliente.nombres}! Bienvenid@ a Mascota Feliz. Para empezar a disrutar de todo lo que tenemos para ti y tu amiguito ingresa a la plataforma con tus credenciales >>>  usuario: ${cliente.correo} y contraseña: ${clave} `;
+    fetch(`${Llaves.urlServicioNotificaciones}/envio-correo?correo_destino=${destino}&asunto=${asunto}&contenido=${contenido}`)
       .then((data: any) => {
         console.log(data);
       })

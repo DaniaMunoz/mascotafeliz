@@ -28,6 +28,12 @@ export class PagoPlan extends Entity {
   cantidad: number;
 
   @property({
+    type: 'number',
+    required: true,
+  })
+  totalPago: number;
+
+  @property({
     type: 'string',
   })
   mascotaId?: string;
@@ -36,6 +42,8 @@ export class PagoPlan extends Entity {
     type: 'string',
   })
   planId?: string;
+
+
   //Cambiamos por relacion has one
   /* @belongsTo(() => Plan)
   planId: string;
